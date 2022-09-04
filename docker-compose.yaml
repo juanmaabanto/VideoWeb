@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  database:
+    image: mssql:dev
+    restart: always
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssw0rd
+      - MSSQL_PID=Express
+    expose:
+      - 1433
+    ports:
+      - 14339:1433
+    networks:
+      - test-network
+
+  web:
+    image: videoweb:dev
+    restart: always
+    container_name: videoweb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=production
+    expose:
+      - 80
+    ports:
+      - 5155:80
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    name: test-network
+    driver: bridge
